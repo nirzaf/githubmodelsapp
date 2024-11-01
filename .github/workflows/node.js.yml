@@ -3,10 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this to your primary branch if different
+      - main  # Change this to your main branch if needed
 
 permissions:
-  contents: write  # Ensure 'write' permission for GITHUB_TOKEN
+  contents: write  # Required to push to gh-pages
 
 jobs:
   build:
@@ -19,13 +19,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20.x'
 
       - name: Install dependencies
         run: npm install
 
       - name: Build project
         run: npm run build
+
+      - name: List contents of dist folder
+        run: ls -la ./dist  # Debugging step to ensure dist folder exists and contains files
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -35,11 +38,6 @@ jobs:
           publish_branch: gh-pages
           allow_empty_commit: false
           keep_files: false
-          force_orphan: true  # Creates an orphan gh-pages branch if it doesn't exist
+          force_orphan: true
           enable_jekyll: false
-          exclude_assets: .github  # Exclude .github directory if present
-
-      - name: Setup Git config (for first-time branch creation)
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          exclude_assets: .github  # Exclude any unwanted folders
