@@ -3,41 +3,28 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this to your main branch if needed
-
-permissions:
-  contents: write  # Required to push to gh-pages
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '20.x'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
+      - name: Build the app
         run: npm run build
 
-      - name: List contents of dist folder
-        run: ls -la ./dist  # Debugging step to ensure dist folder exists and contains files
-
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          allow_empty_commit: false
-          keep_files: false
-          force_orphan: true
-          enable_jekyll: false
-          exclude_assets: .github  # Exclude any unwanted folders
+        run: npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
