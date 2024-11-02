@@ -18,13 +18,13 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2 justify-end">
       <input
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         disabled={disabled}
-        className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+        className="w-[100%] px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
         placeholder="Type your message..."
       />
       <button

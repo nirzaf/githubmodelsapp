@@ -4,6 +4,8 @@ import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { sendMessage } from './api';
 import type { Message, ChatState } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [hasToken, setHasToken] = useState(false);
@@ -52,6 +54,14 @@ function App() {
     }
   };
 
+  const handleReset = () => {
+    setState({
+      messages: [],
+      isLoading: false,
+      error: null
+    });
+  };
+
   if (!hasToken) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -79,8 +89,15 @@ function App() {
           )}
           <div ref={messagesEndRef} />
         </div>
-        <div className="sticky bottom-0 bg-gray-50 pt-4">
+        <div className="sticky bottom-0 bg-gray-50 pt-4 flex items-center">
           <ChatInput onSend={handleSend} disabled={state.isLoading} />
+          <button 
+            onClick={handleReset} 
+            className="ml-2 p-2 text-gray-500 hover:text-gray-700"
+            aria-label="Reset Chat"
+          >
+            <FontAwesomeIcon icon={faRedo} />
+          </button>
         </div>
       </div>
     </div>
